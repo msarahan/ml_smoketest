@@ -1,0 +1,35 @@
+package:
+  name: ML_smoketest
+  version: 1.0
+
+source:
+  - url: https://github.com/tgjeon/Keras-Tutorials/archive/0.1.tar.gz
+    fn: keras-tutorial-0.1.tar.gz
+    sha256: 4aeb36cb7c076597fd01dd75a137f503e7069c77b7b7698040a7fc759756ed8f
+    folder: keras
+  - url: https://github.com/BVLC/caffe/archive/1.0.tar.gz
+    fn: caffe-1.0.tar.gz
+    sha256: 71d3c9eb8a183150f965a465824d01fe82826c22505f7aa314f700ace03fa77f
+    folder: caffe
+  - git_url: https://github.com/pytorch/tutorials
+    git_ref: 78ba7d871596d87de79e800e1e54820c071a4a88
+    folder: pytorch
+
+requirements:
+  run:
+    - keras
+    - caffe
+    - pytorch
+    - nbconvert
+    # pytorch docs are executed by a sphinx doc build
+    - sphinx
+
+test:
+  source_files:
+    - keras
+    - caffe/examples
+    - pytorch
+  commands:
+    - jupyter nbconvert --to notebook --execute keras/*.ipynb
+    - jupyter nbconvert --to notebook --execute caffe/examples/*.ipynb
+    - pushd pytorch && make docs && popd
